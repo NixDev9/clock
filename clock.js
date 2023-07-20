@@ -11,11 +11,11 @@ document.body.appendChild(clockContainer);
 clockContainer.appendChild(dateContainer);
 clockContainer.appendChild(timeContainer);
 
-function getCurrentESTTime() {
+function getCurrentETTime() {
   const now = new Date();
-  const estOffset = now.getTimezoneOffset() / 60 - 5; // EST is UTC-5 (during standard time)
-  const estTime = new Date(now.getTime() + estOffset * 60 * 60 * 1000);
-  return estTime;
+  const etOffset = now.getTimezoneOffset() / 60 - 4; // ET is UTC-4 (during daylight saving time)
+  const etTime = new Date(now.getTime() + etOffset * 60 * 60 * 1000);
+  return etTime;
 }
 
 function formatTime(date) {
@@ -42,14 +42,14 @@ function formatDate(date) {
 }
 
 function updateClock() {
-  const estTime = getCurrentESTTime();
+  const etTime = getCurrentETTime();
   const timeElement = document.getElementById("time");
   const dateElement = document.getElementById("date");
   const monthElement = document.getElementById("month");
   const yearElement = document.getElementById("year");
 
-  timeElement.textContent = formatTime(estTime);
-  dateElement.textContent = formatDate(estTime);
+  timeElement.textContent = formatTime(etTime);
+  dateElement.textContent = formatDate(etTime);
 }
 
 updateClock();
