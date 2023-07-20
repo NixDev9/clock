@@ -1,21 +1,8 @@
-const clockContainer = document.createElement("div");
-clockContainer.className = "clock-container";
-
-const dateContainer = document.createElement("div");
-dateContainer.className = "date-container";
-
-const timeContainer = document.createElement("div");
-timeContainer.className = "time-container";
-
-document.body.appendChild(clockContainer);
-clockContainer.appendChild(dateContainer);
-clockContainer.appendChild(timeContainer);
-
-function getCurrentETTime() {
+function getCurrentESTTime() {
   const now = new Date();
-  const etOffset = now.getTimezoneOffset() / 60 - 4; // ET is UTC-4 (during daylight saving time)
-  const etTime = new Date(now.getTime() + etOffset * 60 * 60 * 1000);
-  return etTime;
+  const estOffset = now.getTimezoneOffset() / 60 - 5; // EST is UTC-5 (during standard time)
+  const estTime = new Date(now.getTime() + estOffset * 60 * 60 * 1000);
+  return estTime;
 }
 
 function formatTime(date) {
@@ -42,17 +29,22 @@ function formatDate(date) {
 }
 
 function updateClock() {
-  const etTime = getCurrentETTime();
+  const estTime = getCurrentESTTime();
   const timeElement = document.getElementById("time");
   const dateElement = document.getElementById("date");
   const monthElement = document.getElementById("month");
   const yearElement = document.getElementById("year");
 
-  timeElement.textContent = formatTime(etTime);
-  dateElement.textContent = formatDate(etTime);
+  timeElement.textContent = formatTime(estTime);
+  dateElement.textContent = formatDate(estTime);
+}
+
+function showVisitorLocalTime() {
+  const localTime = new Date();
+  console.log("Visitor's Local Time:", localTime.toLocaleString());
 }
 
 updateClock();
 setInterval(updateClock, 1000);
 
-
+showVisitorLocalTime();
