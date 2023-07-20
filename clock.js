@@ -1,5 +1,3 @@
-// Add this JavaScript code to your existing HTML file before the closing </body> tag
-// Or you can run it in a JavaScript environment like Node.js
 
 function getCurrentTimeInTimeZone(timezone) {
   const now = new Date();
