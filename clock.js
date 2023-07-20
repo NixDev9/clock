@@ -1,8 +1,7 @@
-function getCurrentESTTime() {
+function getCurrentTimeInTimeZone(timezone) {
   const now = new Date();
-  const estOffset = now.getTimezoneOffset() / 60 - 5; // EST is UTC-5 (during standard time)
-  const estTime = new Date(now.getTime() + estOffset * 60 * 60 * 1000);
-  return estTime;
+  const options = { timeZone: timezone, hour12: true, hour: "numeric", minute: "numeric", second: "numeric" };
+  return now.toLocaleString([], options);
 }
 
 function formatTime(date) {
@@ -29,22 +28,17 @@ function formatDate(date) {
 }
 
 function updateClock() {
-  const estTime = getCurrentESTTime();
+  const localTime = new Date();
   const timeElement = document.getElementById("time");
   const dateElement = document.getElementById("date");
   const monthElement = document.getElementById("month");
   const yearElement = document.getElementById("year");
 
-  timeElement.textContent = formatTime(estTime);
-  dateElement.textContent = formatDate(estTime);
-}
-
-function showVisitorLocalTime() {
-  const localTime = new Date();
-  console.log("Visitor's Local Time:", localTime.toLocaleString());
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const localTimeString = getCurrentTimeInTimeZone(timezone);
+  timeElement.textContent = localTimeString;
+  dateElement.textContent = formatDate(localTime);
 }
 
 updateClock();
 setInterval(updateClock, 1000);
-
-showVisitorLocalTime();
