@@ -1,16 +1,10 @@
+// Add this JavaScript code to your existing HTML file before the closing </body> tag
+// Or you can run it in a JavaScript environment like Node.js
+
 function getCurrentTimeInTimeZone(timezone) {
   const now = new Date();
   const options = { timeZone: timezone, hour12: true, hour: "numeric", minute: "numeric", second: "numeric" };
   return now.toLocaleString([], options);
-}
-
-function formatTime(date) {
-  return date.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: true
-  });
 }
 
 function formatDate(date) {
@@ -31,8 +25,6 @@ function updateClock() {
   const localTime = new Date();
   const timeElement = document.getElementById("time");
   const dateElement = document.getElementById("date");
-  const monthElement = document.getElementById("month");
-  const yearElement = document.getElementById("year");
 
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const localTimeString = getCurrentTimeInTimeZone(timezone);
@@ -40,5 +32,21 @@ function updateClock() {
   dateElement.textContent = formatDate(localTime);
 }
 
+function applyStyles() {
+  document.body.style.backgroundColor = "white";
+  const clockContainers = document.getElementsByClassName("clock-container");
+  for (let i = 0; i < clockContainers.length; i++) {
+    const clockContainer = clockContainers[i];
+    clockContainer.style.border = "none";
+    clockContainer.style.borderRadius = "8px";
+  }
+}
+
+// Call applyStyles to set the styles on page load
+applyStyles();
+
+// Call updateClock to display the time on page load
 updateClock();
+
+// Run the updateClock function every second
 setInterval(updateClock, 1000);
