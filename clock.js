@@ -1,3 +1,29 @@
+const createClock = () => {
+  const clockContainer = document.createElement("div");
+  clockContainer.className = "clock-container";
+  clockContainer.style.fontFamily = "Arial, sans-serif";
+  clockContainer.style.display = "flex";
+  clockContainer.style.flexDirection = "column";
+  clockContainer.style.alignItems = "center";
+  clockContainer.style.backgroundColor = "white";
+  clockContainer.style.padding = "20px";
+  clockContainer.style.borderRadius = "8px";
+
+  const dateContainer = document.createElement("div");
+  dateContainer.className = "date-container";
+  dateContainer.style.fontSize = "24px";
+  dateContainer.style.marginBottom = "10px";
+
+  const timeContainer = document.createElement("div");
+  timeContainer.className = "time-container";
+  timeContainer.style.fontSize = "36px";
+
+  clockContainer.appendChild(dateContainer);
+  clockContainer.appendChild(timeContainer);
+  document.body.appendChild(clockContainer);
+
+  return { dateContainer, timeContainer };
+};
 
 function getCurrentTimeInTimeZone(timezone) {
   const now = new Date();
@@ -19,32 +45,22 @@ function formatDate(date) {
   return `${day} ${month} ${year}`;
 }
 
-function updateClock() {
+function updateClock(dateContainer, timeContainer) {
   const localTime = new Date();
-  const timeElement = document.getElementById("time");
-  const dateElement = document.getElementById("date");
 
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const localTimeString = getCurrentTimeInTimeZone(timezone);
-  timeElement.textContent = localTimeString;
-  dateElement.textContent = formatDate(localTime);
+
+  timeContainer.textContent = localTimeString;
+  dateContainer.textContent = formatDate(localTime);
 }
 
 function applyStyles() {
   document.body.style.backgroundColor = "white";
-  const clockContainers = document.getElementsByClassName("clock-container");
-  for (let i = 0; i < clockContainers.length; i++) {
-    const clockContainer = clockContainers[i];
-    clockContainer.style.border = "none";
-    clockContainer.style.borderRadius = "8px";
-  }
 }
 
-// Call applyStyles to set the styles on page load
 applyStyles();
 
-// Call updateClock to display the time on page load
-updateClock();
-
-// Run the updateClock function every second
-setInterval(updateClock, 1000);
+const { dateContainer, timeContainer } = createClock();
+updateClock(dateContainer, timeContainer);
+setInterval(() => updateClock(dateContainer, timeContainer), 1000);
