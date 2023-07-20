@@ -1,4 +1,3 @@
-// Function to get the current time in EST
 function getCurrentESTTime() {
   const now = new Date();
   const estOffset = -5 * 60; // EST is UTC-5
@@ -6,7 +5,6 @@ function getCurrentESTTime() {
   return estTime;
 }
 
-// Function to format time in 12-hour format with AM/PM
 function formatTime(date) {
   return date.toLocaleString("en-US", {
     hour: "numeric",
@@ -16,7 +14,6 @@ function formatTime(date) {
   });
 }
 
-// Function to format the date
 function formatDate(date) {
   const months = [
     "January", "February", "March", "April",
@@ -31,7 +28,6 @@ function formatDate(date) {
   return `${day} ${month} ${year}`;
 }
 
-// Function to update the clock display
 function updateClock() {
   const estTime = getCurrentESTTime();
   const timeElement = document.getElementById("time");
@@ -45,7 +41,8 @@ function updateClock() {
   dateElement.textContent = formatDate(estTime);
 }
 
+// Call updateClock function initially
+updateClock();
+
 // Run the updateClock function every second
 setInterval(updateClock, 1000);
-
-  
