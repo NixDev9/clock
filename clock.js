@@ -1,4 +1,5 @@
-const createClock = () => {
+// Function to create the clock container
+function createClock() {
   const clockContainer = document.createElement("div");
   clockContainer.className = "clock-container";
   clockContainer.style.fontFamily = "Arial, sans-serif";
@@ -7,52 +8,30 @@ const createClock = () => {
   clockContainer.style.alignItems = "center";
   clockContainer.style.backgroundColor = "white";
   clockContainer.style.padding = "20px";
-  clockContainer.style.borderRadius = "8px";
-
-  const dateContainer = document.createElement("div");
-  dateContainer.className = "date-container";
-  dateContainer.style.fontSize = "24px";
-  dateContainer.style.marginBottom = "10px";
-
-  const timeContainer = document.createElement("div");
-  timeContainer.className = "time-container";
-  timeContainer.style.fontSize = "36px";
-
-  clockContainer.appendChild(dateContainer);
-  clockContainer.appendChild(timeContainer);
+  clockContainer.style.borderRadius = "0"; // Set border-radius to 0
   document.body.appendChild(clockContainer);
 
-  return { dateContainer, timeContainer };
-};
-
-function getCurrentTimeInTimeZone(timezone) {
-  const now = new Date();
-  const options = { timeZone: timezone, hour12: true, hour: "numeric", minute: "numeric", second: "numeric" };
-  return now.toLocaleString([], options);
+  return clockContainer;
 }
 
-function formatDate(date) {
-  const months = [
-    "January", "February", "March", "April",
-    "May", "June", "July", "August",
-    "September", "October", "November", "December"
-  ];
-
-  const day = date.getDate();
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
-
-  return `${day} ${month} ${year}`;
-}
-
-function updateClock(dateContainer, timeContainer) {
+// Function to update the clock with the current time
+function updateClock(clockContainer) {
   const localTime = new Date();
+  const timeElement = document.createElement("div");
+  timeElement.className = "time-container";
+  timeElement.style.fontSize = "36px";
+  const timeString = localTime.toLocaleString([], { hour: "numeric", minute: "numeric", second: "numeric", hour12: true });
+  timeElement.textContent = timeString;
 
-  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const localTimeString = getCurrentTimeInTimeZone(timezone);
+  const dateElement = document.createElement("div");
+  dateElement.className = "date-container";
+  dateElement.style.fontSize = "24px";
+  const dateString = localTime.toLocaleString([], { day: "numeric", month: "long", year: "numeric" });
+  dateElement.textContent = dateString;
 
-  timeContainer.textContent = localTimeString;
-  dateContainer.textContent = formatDate(localTime);
+  clockContainer.innerHTML = ""; // Clear the container
+  clockContainer.appendChild(dateElement);
+  clockContainer.appendChild(timeElement);
 }
 
 function applyStyles() {
@@ -61,6 +40,7 @@ function applyStyles() {
 
 applyStyles();
 
-const { dateContainer, timeContainer } = createClock();
-updateClock(dateContainer, timeContainer);
-setInterval(() => updateClock(dateContainer, timeContainer), 1000);
+const clockContainer = createClock();
+updateClock(clockContainer);
+setInterval(() => updateClock(clockContainer), 1000);
+
