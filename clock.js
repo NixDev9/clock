@@ -31,13 +31,11 @@ function formatDate(date) {
 function updateClock() {
   const estTime = getCurrentESTTime();
   const timeElement = document.getElementById("time");
-  const ampmElement = document.getElementById("ampm");
   const dateElement = document.getElementById("date");
   const monthElement = document.getElementById("month");
   const yearElement = document.getElementById("year");
 
   timeElement.textContent = formatTime(estTime);
-  ampmElement.textContent = estTime.getHours() >= 12 ? "PM" : "AM";
   dateElement.textContent = formatDate(estTime);
 }
 
@@ -46,3 +44,4 @@ updateClock();
 
 // Run the updateClock function every second
 setInterval(updateClock, 1000);
+
