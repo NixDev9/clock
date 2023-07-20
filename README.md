@@ -1,1 +1,3 @@
-Free use Clock in EST!
+free clock
+someone vist it show there timezone
+credits:nix
