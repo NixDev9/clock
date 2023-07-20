@@ -1,5 +1,3 @@
-credit to nix
-
 const clockContainer = document.createElement("div");
 clockContainer.className = "clock-container";
 
