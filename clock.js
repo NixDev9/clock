@@ -1,7 +1,20 @@
+const clockContainer = document.createElement("div");
+clockContainer.className = "clock-container";
+
+const dateContainer = document.createElement("div");
+dateContainer.className = "date-container";
+
+const timeContainer = document.createElement("div");
+timeContainer.className = "time-container";
+
+document.body.appendChild(clockContainer);
+clockContainer.appendChild(dateContainer);
+clockContainer.appendChild(timeContainer);
+
 function getCurrentESTTime() {
   const now = new Date();
-  const estOffset = -5 * 60; // EST is UTC-5
-  const estTime = new Date(now.getTime() + estOffset * 60 * 1000);
+  const estOffset = now.getTimezoneOffset() / 60 - 5; // EST is UTC-5 (during standard time)
+  const estTime = new Date(now.getTime() + estOffset * 60 * 60 * 1000);
   return estTime;
 }
 
@@ -39,9 +52,7 @@ function updateClock() {
   dateElement.textContent = formatDate(estTime);
 }
 
-// Call updateClock function initially
 updateClock();
-
-// Run the updateClock function every second
 setInterval(updateClock, 1000);
+
 
