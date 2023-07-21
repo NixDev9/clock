@@ -1,39 +1,45 @@
-// Create a clock container
-const clockContainer = document.createElement("div");
-clockContainer.style = `
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 20px;
-  font-size: 24px;
-`;
-
-// Function to update the clock
-function updateClock() {
+function getCurrentTimeInTimeZone(timezone) {
   const now = new Date();
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const options = { timeZone: timezone, hour12: true, hour: "numeric", minute: "numeric", second: "numeric" };
+  return now.toLocaleString([], options);
+}
+
+function formatTime(date) {
+  return date.toLocaleString("en-US", {
     hour: "numeric",
     minute: "numeric",
     second: "numeric",
-    hour12: false,
-  };
-  const dateString = now.toLocaleDateString(undefined, options);
-  clockContainer.textContent = dateString;
+    hour12: true
+  });
 }
 
-// Call updateClock function every second to keep the clock up-to-date
-setInterval(updateClock, 1000);
+function formatDate(date) {
+  const months = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+  ];
 
-// Initial call to display the clock immediately when the page loads
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${day} ${month} ${year}`;
+}
+
+function updateClock() {
+  const localTime = new Date();
+  const timeElement = document.getElementById("time");
+  const dateElement = document.getElementById("date");
+  const monthElement = document.getElementById("month");
+  const yearElement = document.getElementById("year");
+
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const localTimeString = getCurrentTimeInTimeZone(timezone);
+  timeElement.textContent = localTimeString;
+  dateElement.textContent = formatDate(localTime);
+}
+
 updateClock();
-
-// Add the clock container to the document body
-document.body.appendChild(clockContainer);
+setInterval(updateClock, 1000);
 
