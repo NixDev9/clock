@@ -1,45 +1,39 @@
-// Function to create the clock container
-function createClock() {
-  const clockContainer = document.createElement("div");
-  clockContainer.className = "clock-container";
-  clockContainer.style.fontFamily = "Arial, sans-serif";
-  clockContainer.style.display = "flex";
-  clockContainer.style.justifyContent = "space-between"; // Align items to the ends
-  clockContainer.style.alignItems = "center";
-  clockContainer.style.backgroundColor = "white";
-  clockContainer.style.padding = "20px";
-  clockContainer.style.borderRadius = "8px"; // Set border-radius to 8px
-  document.body.appendChild(clockContainer);
+// Create a clock container
+const clockContainer = document.createElement("div");
+clockContainer.style = `
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 20px;
+  font-size: 24px;
+`;
 
-  const dateElement = document.createElement("div");
-  dateElement.className = "date-container";
-  dateElement.style.fontSize = "24px";
-  clockContainer.appendChild(dateElement);
-
-  const timeElement = document.createElement("div");
-  timeElement.className = "time-container";
-  timeElement.style.fontSize = "36px";
-  clockContainer.appendChild(timeElement);
-
-  return { dateElement, timeElement };
+// Function to update the clock
+function updateClock() {
+  const now = new Date();
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+  };
+  const dateString = now.toLocaleDateString(undefined, options);
+  clockContainer.textContent = dateString;
 }
 
-// Function to update the clock with the current time
-function updateClock(dateElement, timeElement) {
-  const localTime = new Date();
-  const timeString = localTime.toLocaleString([], { hour: "numeric", minute: "numeric", second: "numeric", hour12: true });
-  timeElement.textContent = timeString;
+// Call updateClock function every second to keep the clock up-to-date
+setInterval(updateClock, 1000);
 
-  const dateString = localTime.toLocaleString([], { day: "numeric", month: "long", year: "numeric" });
-  dateElement.textContent = dateString;
-}
+// Initial call to display the clock immediately when the page loads
+updateClock();
 
-function applyStyles() {
-  document.body.style.backgroundColor = "white";
-}
+// Add the clock container to the document body
+document.body.appendChild(clockContainer);
 
-applyStyles();
-
-const { dateElement, timeElement } = createClock();
-updateClock(dateElement, timeElement);
-setInterval(() => updateClock(dateElement, timeElement), 1000);
