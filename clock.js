@@ -1,28 +1,50 @@
-function updateClock() {
-  const currentDate = new Date();
-
-  // Get elements to display date and time
-  const dateElement = document.getElementById("date");
-  const timeElement = document.getElementById("time");
-
-  // Get visitor's local time
-  const localTime = currentDate.toLocaleTimeString();
-  timeElement.innerText = `Local Time: ${localTime}`;
-
-  // Get visitor's local date
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const localDate = currentDate.toLocaleDateString(undefined, options);
-  dateElement.innerText = `Local Date: ${localDate}`;
-
-  // Get visitor's timezone abbreviation
-  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  timeElement.innerText += ` ${timezone}`;
+// Function to get the current time in EST
+function getCurrentESTTime() {
+  const now = new Date();
+  const estOffset = -5 * 60; // EST is UTC-5
+  const estTime = new Date(now.getTime() + estOffset * 60 * 1000);
+  return estTime;
 }
 
-// Update the clock every second
+// Function to format time in 12-hour format with AM/PM
+function formatTime(date) {
+  return date.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true
+  });
+}
+
+// Function to format the date
+function formatDate(date) {
+  const months = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+  ];
+
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${day} ${month} ${year}`;
+}
+
+// Function to update the clock display
+function updateClock() {
+  const estTime = getCurrentESTTime();
+  const timeElement = document.getElementById("time");
+  const ampmElement = document.getElementById("ampm");
+  const dateElement = document.getElementById("date");
+  const monthElement = document.getElementById("month");
+  const yearElement = document.getElementById("year");
+
+  timeElement.textContent = formatTime(estTime);
+  ampmElement.textContent = estTime.getHours() >= 12 ? "PM" : "AM";
+  dateElement.textContent = formatDate(estTime);
+}
+
+// Run the updateClock function every second
 setInterval(updateClock, 1000);
-
-// Initial call to display the clock immediately when the script loads
-updateClock();
-
 
