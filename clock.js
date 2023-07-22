@@ -1,11 +1,23 @@
-// Function to get the current time in EST
-function getCurrentESTTime() {
+const clockContainer = document.createElement("div");
+clockContainer.className = "clock-container";
+
+const dateContainer = document.createElement("div");
+dateContainer.className = "date-container";
+
+const timeContainer = document.createElement("div");
+timeContainer.className = "time-container";
+
+document.body.appendChild(clockContainer);
+clockContainer.appendChild(dateContainer);
+clockContainer.appendChild(timeContainer);
+
+function getCurrentETTime() {
   const now = new Date();
-  const estOffset = -5 * 60; // EST is UTC-5
-  return new Date(now.getTime() + estOffset * 60 * 1000);
+  const etOffset = now.getTimezoneOffset() / 60 - 4; // ET is UTC-4 (during daylight saving time)
+  const etTime = new Date(now.getTime() + etOffset * 60 * 60 * 1000);
+  return etTime;
 }
 
-// Function to format time in 12-hour format with AM/PM
 function formatTime(date) {
   return date.toLocaleString("en-US", {
     hour: "numeric",
@@ -15,7 +27,6 @@ function formatTime(date) {
   });
 }
 
-// Function to format the date
 function formatDate(date) {
   const months = [
     "January", "February", "March", "April",
@@ -30,41 +41,16 @@ function formatDate(date) {
   return `${day} ${month} ${year}`;
 }
 
-// Function to get the local time for the visitor based on their time zone
-function getVisitorLocalTime(timeZoneOffset) {
-  const now = new Date();
-  const localOffset = now.getTimezoneOffset();
-  const visitorTimeOffset = localOffset + timeZoneOffset;
-  return new Date(now.getTime() + visitorTimeOffset * 60 * 1000);
-}
-
-// Function to update the clock display
 function updateClock() {
-  // EST time
-  const estTime = getCurrentESTTime();
+  const etTime = getCurrentETTime();
   const timeElement = document.getElementById("time");
-  const ampmElement = document.getElementById("ampm");
   const dateElement = document.getElementById("date");
+  const monthElement = document.getElementById("month");
+  const yearElement = document.getElementById("year");
 
-  timeElement.textContent = formatTime(estTime);
-  ampmElement.textContent = estTime.getHours() >= 12 ? "PM" : "AM";
-  dateElement.textContent = formatDate(estTime);
-
-  // Visitor's time
-  const visitorTimeZoneOffset = new Date().getTimezoneOffset();
-  const visitorLocalTime = getVisitorLocalTime(visitorTimeZoneOffset);
-  const visitorTimeElement = document.getElementById("visitorTime");
-
-  visitorTimeElement.textContent = formatTime(visitorLocalTime) + " " + getShortTimeZoneAbbreviation(visitorTimeZoneOffset);
+  timeElement.textContent = formatTime(etTime);
+  dateElement.textContent = formatDate(etTime);
 }
 
-// Function to get short timezone abbreviation
-function getShortTimeZoneAbbreviation(timeZoneOffset) {
-  const offsetHours = Math.abs(Math.floor(timeZoneOffset / 60));
-  const offsetMinutes = Math.abs(timeZoneOffset % 60);
-  const sign = timeZoneOffset > 0 ? "-" : "+";
-  return `GMT ${sign}${offsetHours}:${offsetMinutes}`;
-}
-
-// Run the updateClock function every second
+updateClock();
 setInterval(updateClock, 1000);
