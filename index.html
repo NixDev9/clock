@@ -2,54 +2,11 @@
 <html>
 <head>
   <title>JavaScript Clock</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      background-color: lightgray; /* Set the background color here */
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .clock-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: white; /* Set the background color for the clock container */
-      padding: 20px;
-      border-radius: 8px;
-    }
-
-    .date-container {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    .time-container {
-      font-size: 36px;
-    }
-  </style>
 </head>
 <body>
-  <div class="clock-container">
-    <div class="date-container">
-      <span id="date"></span>
-      <span id="month"></span>
-      <span id="year"></span>
-    </div>
-    <div class="time-container">
-      <span id="time"></span>
-      <span id="ampm"></span>
-    </div>
-  </div>
+  <h1 id="time"></h1>
+  <h2 id="date"></h2>
 
   <script src="clock.js"></script>
 </body>
 </html>
-
