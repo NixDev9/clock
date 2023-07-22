@@ -1,45 +1,28 @@
-function getCurrentTimeInTimeZone(timezone) {
-  const now = new Date();
-  const options = { timeZone: timezone, hour12: true, hour: "numeric", minute: "numeric", second: "numeric" };
-  return now.toLocaleString([], options);
-}
-
-function formatTime(date) {
-  return date.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: true
-  });
-}
-
-function formatDate(date) {
-  const months = [
-    "January", "February", "March", "April",
-    "May", "June", "July", "August",
-    "September", "October", "November", "December"
-  ];
-
-  const day = date.getDate();
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
-
-  return `${day} ${month} ${year}`;
-}
-
 function updateClock() {
-  const localTime = new Date();
-  const timeElement = document.getElementById("time");
-  const dateElement = document.getElementById("date");
-  const monthElement = document.getElementById("month");
-  const yearElement = document.getElementById("year");
+  const currentDate = new Date();
 
+  // Get elements to display date and time
+  const dateElement = document.getElementById("date");
+  const timeElement = document.getElementById("time");
+
+  // Get visitor's local time
+  const localTime = currentDate.toLocaleTimeString();
+  timeElement.innerText = `Local Time: ${localTime}`;
+
+  // Get visitor's local date
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const localDate = currentDate.toLocaleDateString(undefined, options);
+  dateElement.innerText = `Local Date: ${localDate}`;
+
+  // Get visitor's timezone abbreviation
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const localTimeString = getCurrentTimeInTimeZone(timezone);
-  timeElement.textContent = localTimeString;
-  dateElement.textContent = formatDate(localTime);
+  timeElement.innerText += ` ${timezone}`;
 }
 
-updateClock();
+// Update the clock every second
 setInterval(updateClock, 1000);
+
+// Initial call to display the clock immediately when the script loads
+updateClock();
+
 
